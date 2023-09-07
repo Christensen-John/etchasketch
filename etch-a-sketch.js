@@ -1,12 +1,13 @@
 /* !! Nodes, Elements, and Variables */
 const sketchContainer = document.querySelector("div.sketch");
-const cellSize = 32;
+const cellSize = 16;
 
 /* !! Functions */
 function createSketchWindow(parentElem, numRows, numCol) {
   createRows(parentElem, numRows);
   const sketchRows = document.querySelectorAll("div.sketch>div");
   createCols(sketchRows, numCol);
+  createListeners();
 }
 
 function createRows(parentElem, numRows) {
@@ -26,6 +27,21 @@ function createCols(parentElems, numCol) {
       div.setAttribute("data-column", `${col}`);
       row.appendChild(div);
     }
+  });
+}
+
+function createListeners() {
+  const rows = document.querySelectorAll("div[data-row]"); //Nodelist of all rows
+  rows.forEach((row) => {
+    createHoverListener(row.childNodes);
+  });
+}
+
+function createHoverListener(rowList) {
+  rowList.forEach((cell) => {
+    cell.addEventListener("mouseover", (e) => {
+      cell.style.backgroundColor = "black";
+    });
   });
 }
 
