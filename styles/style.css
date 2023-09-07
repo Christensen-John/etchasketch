@@ -1,0 +1,6 @@
+/* !! General Styles */
+div[data-row] {
+  width: 50%;
+  height: 25px;
+  border: 1px solid grey;
+}
