@@ -32,7 +32,7 @@ div.cell {
 
 div.cell.drawn {
   background-color: black;
-  transition: 0.5;
+  /* transition: 0.5; */
 }
 
 div.menu {

@@ -14,19 +14,29 @@ function setup() {
   drawWindow(defaultCellSize, defaultCellSize);
 
   //Setup Listeners
-  cellHoverListener(document.querySelectorAll(".cell"));
 }
 
 function drawWindow(numRows, numCol) {
   sketchContainer.innerHTML = "";
   for (let rows = 0; rows < numRows; rows++) {
     for (let cols = 0; cols < numCol; cols++) {
+      //Create a new cell
       let cell = document.createElement("div");
+
       cell.classList.add("cell");
+
+      //Give each cell a unique set of identifiers
       cell.setAttribute(`data-row`, `${rows}`);
       cell.setAttribute(`data-column`, `${cols}`);
+
+      //Set the size of each cell to fit evenly in the sketch
       cell.style.width = `${sketchSize / numRows}px`;
       cell.style.height = `${sketchSize / numCol}px`;
+
+      //Add the mouseover listener to each cell, prevents the need to loop over all cells twice.
+      cellHoverListener(cell);
+
+      //Add the cell to the sketch container
       sketchContainer.appendChild(cell);
     }
   }
@@ -71,13 +81,16 @@ function drawWindow(numRows, numCol) {
 // }
 
 /* !! Listeners */
-function cellHoverListener(cellList) {
-  cellList.forEach((cell) => {
-    cell.addEventListener("mouseover", (e) => {
-      cell.classList.add("drawn");
-    });
+function cellHoverListener(cell) {
+  cell.addEventListener("mouseover", () => {
+    cell.classList.add("drawn");
   });
 }
+
+resInButton.addEventListener("click", () => {
+  let newRes = resInField.value;
+  drawWindow(newRes, newRes);
+});
 
 /* !! Execution */
 setup();
