@@ -1,5 +1,6 @@
 /* !! Nodes, Elements, and Variables */
 const sketchContainer = document.querySelector("div.sketch");
+const cellSize = 32;
 
 /* !! Functions */
 function createSketchWindow(parentElem, numRows, numCol) {
@@ -12,6 +13,7 @@ function createRows(parentElem, numRows) {
   for (let row = 0; row < numRows; row++) {
     let div = document.createElement("div");
     div.setAttribute("data-row", `${row}`);
+    div.style.height = `${100 / numRows}%`;
     parentElem.appendChild(div);
   }
 }
@@ -28,4 +30,4 @@ function createCols(parentElems, numCol) {
 }
 
 /* !! Execution */
-createSketchWindow(sketchContainer, 16, 16);
+createSketchWindow(sketchContainer, cellSize, cellSize);
