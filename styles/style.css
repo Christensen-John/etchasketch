@@ -1,5 +1,5 @@
 /* !! General Styles */
-div.sketch-window {
+div.sketch-container {
   height: 95vh;
   display: flex;
   flex-direction: column;
