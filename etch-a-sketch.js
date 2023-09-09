@@ -1,11 +1,12 @@
 /* !! Nodes, Elements, and Variables */
 const sketch = document.querySelector("div.sketch");
-const cellContainer = document.querySelector("div.cell-container");
+const rowContainer = document.querySelector("div.row-container");
 const resetButton = document.querySelector("button#reset");
 const resizeField = document.querySelector("input#sizeInputField");
 const resizeButton = document.querySelector("button#sizeInputButton");
 const sketchSize = 960;
-let cellCount = 16;
+const defaultCellCount = 16;
+let cellCount = defaultCellCount;
 
 /* !! Functions */
 //For first time setup
@@ -15,10 +16,11 @@ function setup() {
   sketch.style.width = `${sketchSize}px`;
 
   //setup Menu functionality
-  addResetListener(resetButton);
+  addResetColorListener(resetButton);
+  addResizeListener(resizeButton);
 
   //Setup sketch area
-  createCellContainer(cellCount);
+  setupRowContainer(defaultCellCount);
 }
 
 function clear() {
@@ -28,11 +30,11 @@ function clear() {
   });
 }
 
-function createCellContainer(size) {
+function setupRowContainer(size) {
   //Create column of rowDivs, each with the same number of cells
   for (let i = 0; i < size; i++) {
     let rowDiv = createRow(i, size);
-    cellContainer.appendChild(rowDiv);
+    rowContainer.appendChild(rowDiv);
   }
 }
 
@@ -57,115 +59,88 @@ function createCell(row, col, sizeFactor) {
   cell.classList.add("cell"); //Give each cell a unique set of identifiers
   // cell.setAttribute(`data-row`, `${row}`); //Moved to the row div
   cell.setAttribute(`data-column`, `${col}`);
+
+  //Moved cell size to a custom function
   cell.style.width = `${sketchSize / sizeFactor}px`;
   cell.style.height = `${sketchSize / sizeFactor}px`;
   addHoverListener(cell);
   return cell;
 }
 
-// function drawFrame(cellCnt) {
-//   if (cellCnt > cellCount) {
-//     growSketchGrid(cellCnt);
-//   } else if (cellCnt < cellCount) {
-//     shrinkSketchGrid(cellCnt);
-//   } else {
-//     console.alert("The cell count was not changed");
-//   }
-// }
+function increaseSketchSize(newSize) {
+  newSize = Number(newSize);
+  //Get the info:
+  let newCellSize = sketchSize / newSize;
 
-// function resizeSketchWindow(newSize) {
-//   /*
-//   If size is smaller than cellCount call shrink.
-//   Else, call grow
-//   */
-// }
+  //Loop from 0 up to newSize. This goes through all rows
+  for (let rowLoopVariable = 0; rowLoopVariable < newSize; rowLoopVariable++) {
+    //If there is an old row
+    if (newSize === cellCount) {
+      console.warn(`No change was made to size since the value is the same`);
+    } else if (rowLoopVariable < cellCount) {
+      //Get the cells to update the sizes:
+      let currentRow = document.querySelector(
+        `[data-row="${rowLoopVariable}"]`
+      );
 
-// function shrinkSketchGrid(newSize) {
-//   /*
-//   Save a slice of the nodeList. Turn into array.
-//   Clear screen.
-//   Change CSS style width and height to resize existing cells to fit into sketch frame
-//   add elements of array back into sketchFrame
-//   */
-// }
+      //Loop through each of the cells and update the size
+      currentRow.childNodes.forEach((cell) => {
+        cell.style.width = `${newCellSize}px`;
+        cell.style.height = `${newCellSize}px`;
+      });
 
-// function growSketchGrid(newSize) {
-//   let cellList = document.querySelectorAll("div.cell");
-//   if(cellList.length === 0) {
-//     //NodeList is empty. Create a new one
-//     for(let i = 0; i < newSize; i++) {
-//       for(let j = 0; j < newSize; j++) {
-//         let div = document.createAttribute('div');
-//       }
-//     }
-//   } else {
-//     //Node list is not empty, add to the previous one
-//     //Loop from end. Every index+1 % cellCount add the required new divs
-//     //Every other index, resize the cell
-//   }
-/*
-  Loop 1: 0 up to cellCount
-  Change CSS style width and height to resize existing cells to fit into sketch frame
+      //2-b append new cells
+      for (
+        let additionalColumns = cellCount;
+        additionalColumns < newSize;
+        additionalColumns++
+      ) {
+        currentRow.appendChild(
+          createCell(rowLoopVariable, additionalColumns, newSize)
+        );
+      }
+    }
+    //else a new one needs to be created
+    else {
+      let row = createRow(rowLoopVariable, newSize);
+      rowContainer.appendChild(row);
+    }
+  }
 
-  Loop Part 2:
-  Start loop at cellCount (16 by default), loop until growthFactor - cellCount
-  Create new cells
-  */
+  //Update cellCount to match the new size
+  cellCount = newSize;
+}
 
-//   //Loop through all previous cells
-//   for (let row = 0; row < newSize; row++) {
-//     for (let col = 0; col < newSize; col++) {
-//       //Create a new cell
-//       let cell = document.createElement("div");
-//       setCellAttribute(cell, row, col);
-//       sketchFrame.appendChild(div);
-//     }
-//   }
-// }
+function shrinkSketchSize(newSize) {
+  newSize = Number(newSize);
+  //calculate new cellSize
+  let newCellSize = sketchSize / newSize;
 
-// function setCellAttribute(cell, row, col, cellCnt) {
-//   //Set the size of each cell to fit evenly in the sketch
-//   //Add the mouseover listener to each cell, prevents the need to loop over all cells twice.
-//   cellHoverListener(cell);
-// }
-
-// function createRows(parentElem, numRows) {
-//   for (let row = 0; row < numRows; row++) {
-//     let div = document.createElement("div");
-//     div.setAttribute("data-row", `${row}`);
-//     div.style.height = `${100 / numRows}%`;
-//     parentElem.appendChild(div);
-//   }
-// }
-
-// //parentElems is a nodelist of multiple rows
-// function createCols(parentElems, numCol) {
-//   parentElems.forEach((row) => {
-//     for (let col = 0; col < numCol; col++) {
-//       let div = document.createElement("div");
-//       div.setAttribute("data-column", `${col}`);
-//       row.appendChild(div);
-//     }
-//   });
-// }
-
-// function createListeners() {
-//   const rows = document.querySelectorAll("div[data-row]"); //Nodelist of all rows
-//   rows.forEach((row) => {
-//     createHoverListener(row.childNodes);
-//   });
-//   resetButton.addEventListener("click", () => {
-//     let cells = document.querySelectorAll("div[data-column");
-//     cells.forEach((cell) => {
-//       cell.style.backgroundColor = "white";
-//     });
-//   });
-//   resInButton.addEventListener("click", () => {
-//     let resolution = resInField.value;
-//     console.log(resolution);
-//     createSketchWindow(sketchFrame, resolution, resolution);
-//   });
-// }
+  //Loop from the last row to the first, removing rows and cells as needed
+  for (
+    let rowLoopVariable = cellCount - 1;
+    rowLoopVariable >= 0;
+    rowLoopVariable--
+  ) {
+    //Get parent row. It will either be removed or have child nodes removed from it
+    let currentRow = document.querySelector(`[data-row="${rowLoopVariable}"]`);
+    if (rowLoopVariable < newSize) {
+      //update size of cells in the row
+      //Remove cells from end of row
+      let cellArray = Array.from(currentRow.childNodes).slice(0, newSize);
+      currentRow.innerHTML = "";
+      cellArray.forEach((cell) => {
+        cell.style.width = `${newCellSize}px`;
+        cell.style.height = `${newCellSize}px`;
+        currentRow.appendChild(cell);
+      });
+    } else {
+      rowContainer.removeChild(currentRow);
+    }
+  }
+  //Update cellCount to match the new size
+  cellCount = newSize;
+}
 
 /* !! Listener Functions*/
 function addHoverListener(cell) {
@@ -176,14 +151,34 @@ function addHoverListener(cell) {
 
 function addResizeListener(button) {
   button.addEventListener("click", () => {
-    let newSize = resizeField.value;
-    //FINISH:
-    //Need to call the drawFrame with new cells added
+    //Get the value from the field
+    let newSize = Number(resizeField.value);
+
+    //Choose correct action based on input value
+    if (newSize === cellCount) {
+      console.warn("New size value needs to be different from current size");
+    } else if (newSize > cellCount) {
+      increaseSketchSize(newSize);
+    } else {
+      shrinkSketchSize(newSize);
+    }
   });
 }
 
-function addResetListener(button) {
+function addResetColorListener(button) {
   button.addEventListener("click", clear);
+}
+
+function addResetSizeListener(button) {
+  button.addEventListener("click", () => {
+    if (cellCount === defaultCellCount) {
+      console.warn("Sketch is already at the default size!");
+    } else if (cellCount < defaultCellCount) {
+      increaseSketchSize(defaultCellCount);
+    } else {
+      shrinkSketchSize(defaultCellCount);
+    }
+  });
 }
 
 /* !! Execution */
