@@ -14,11 +14,19 @@ function setup() {
   sketch.style.height = `${sketchSize}px`;
   sketch.style.width = `${sketchSize}px`;
 
-  //Attempt #2
+  //setup Menu functionality
+  addResetListener(resetButton);
+
+  //Setup sketch area
   createCellContainer(cellCount);
 }
 
-function clear() {}
+function clear() {
+  let cells = document.querySelectorAll("div.cell");
+  cells.forEach((cell) => {
+    cell.classList.remove("drawn");
+  });
+}
 
 function createCellContainer(size) {
   //Create column of rowDivs, each with the same number of cells
@@ -172,6 +180,10 @@ function addResizeListener(button) {
     //FINISH:
     //Need to call the drawFrame with new cells added
   });
+}
+
+function addResetListener(button) {
+  button.addEventListener("click", clear);
 }
 
 /* !! Execution */
