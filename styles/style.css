@@ -7,10 +7,15 @@ div.sketch-container {
   align-items: center;
 }
 
+div.cell-container {
+  display: flex;
+  flex-direction: column;
+}
+
 div.sketch {
   aspect-ratio: 1 / 1;
   /* height: 960px; */
-  border: 3px solid lightcoral;
+  outline: 3px solid lightcoral;
   display: flex;
   flex-wrap: wrap;
 }
@@ -39,4 +44,12 @@ div.menu {
   display: flex;
   justify-content: space-between;
   width: 960px;
+}
+
+div.cell-container {
+  display: flex;
+}
+
+div.row {
+  display: flex;
 }
