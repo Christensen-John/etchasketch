@@ -1,4 +1,7 @@
 /* !! General Styles */
+footer {
+  text-align: center;
+}
 
 /* !! Class, Id, and Typed Styles */
 div.sketch-container {
