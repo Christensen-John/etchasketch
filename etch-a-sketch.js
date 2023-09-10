@@ -4,6 +4,7 @@ const rowContainer = document.querySelector("div.row-container");
 const eraseButton = document.querySelector("button#erase");
 const resizeField = document.querySelector("input#sizeInputField");
 const resizeButton = document.querySelector("button#sizeInputButton");
+const resetButton = document.querySelector("button#reset");
 const sketchSize = 960;
 const defaultCellCount = 16;
 let cellCount = defaultCellCount;
@@ -18,6 +19,7 @@ function setup() {
   //setup Menu functionality
   addEraserListener(eraseButton);
   addResizeListener(resizeButton);
+  addResetListener(resetButton);
 
   //Setup sketch area
   setupRowContainer(defaultCellCount);
@@ -142,6 +144,16 @@ function shrinkSketchSize(newSize) {
   cellCount = newSize;
 }
 
+function resize(newSize) {
+  if (newSize === cellCount) {
+    console.warn("New size value needs to be different from current size");
+  } else if (newSize > cellCount) {
+    increaseSketchSize(newSize);
+  } else {
+    shrinkSketchSize(newSize);
+  }
+}
+
 /* !! Listener Functions*/
 function addHoverListener(cell) {
   cell.addEventListener("mouseover", () => {
@@ -154,14 +166,7 @@ function addResizeListener(button) {
     //Get the value from the field
     let newSize = Number(resizeField.value);
 
-    //Choose correct action based on input value
-    if (newSize === cellCount) {
-      console.warn("New size value needs to be different from current size");
-    } else if (newSize > cellCount) {
-      increaseSketchSize(newSize);
-    } else {
-      shrinkSketchSize(newSize);
-    }
+    resize(newSize);
   });
 }
 
@@ -181,5 +186,12 @@ function addResetSizeListener(button) {
   });
 }
 
+function addResetListener(button) {
+  button.addEventListener("click", () => {
+    resize(defaultCellCount);
+    clear();
+    resizeField.value = "";
+  });
+}
 /* !! Execution */
 setup();
