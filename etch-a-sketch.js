@@ -1,7 +1,7 @@
 /* !! Nodes, Elements, and Variables */
 const sketch = document.querySelector("div.sketch");
 const rowContainer = document.querySelector("div.row-container");
-const resetButton = document.querySelector("button#reset");
+const eraseButton = document.querySelector("button#erase");
 const resizeField = document.querySelector("input#sizeInputField");
 const resizeButton = document.querySelector("button#sizeInputButton");
 const sketchSize = 960;
@@ -16,7 +16,7 @@ function setup() {
   sketch.style.width = `${sketchSize}px`;
 
   //setup Menu functionality
-  addResetColorListener(resetButton);
+  addEraserListener(eraseButton);
   addResizeListener(resizeButton);
 
   //Setup sketch area
@@ -165,7 +165,7 @@ function addResizeListener(button) {
   });
 }
 
-function addResetColorListener(button) {
+function addEraserListener(button) {
   button.addEventListener("click", clear);
 }
 
