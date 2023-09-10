@@ -18,7 +18,7 @@ div.cell-container {
 div.sketch {
   aspect-ratio: 1 / 1;
   /* height: 960px; */
-  outline: 3px solid lightcoral;
+  border: 3px solid lightcoral;
   display: flex;
   flex-wrap: wrap;
 }
@@ -35,7 +35,7 @@ div[data-row] {
 } */
 
 div.cell {
-  outline: 1px dotted blue;
+  /* outline: 1px dotted blue; */
 }
 
 div.cell.drawn {
