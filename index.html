@@ -14,14 +14,19 @@
       <h1>Etch-A-Sketch</h1>
       <div class="menu">
         <div id="sizeMenu">
-          <label for="sizeInputField">Enter Number of Squares</label>
-          <input
-            type="number"
-            name="sketchSize"
-            id="sizeInputField"
-            min="16"
-            max="248"
-          />
+          <label for="sizeInputField">Sketch resolution</label>
+          <div>
+            <h2 id="resolution-label">16x16</h2>
+            <input
+              type="range"
+              name="sketchSize"
+              id="sizeInputField"
+              value="16"
+              step="1"
+              min="16"
+              max="128"
+            />
+          </div>
           <button id="sizeInputButton">Change Resolution</button>
           <button id="reset">Reset</button>
         </div>
