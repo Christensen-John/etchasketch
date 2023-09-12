@@ -8,6 +8,7 @@ const resetButton = document.querySelector("button#reset");
 const sketchSize = 960;
 const defaultCellCount = 16;
 let cellCount = defaultCellCount;
+const drawnCells = {};
 
 //CSS Stylesheet test and creation
 let stylesheet = new CSSStyleSheet();
@@ -180,6 +181,15 @@ function resize(newSize) {
 /* !! Listener Functions*/
 function addHoverListener(cell) {
   cell.addEventListener("mouseover", () => {
+    // console.log(cell.parentElement.attributes["data-row"].nodeValue);
+    // console.log(cell.attributes["data-column"].nodeValue);
+    let currRow = cell.parentElement.attributes["data-row"].nodeValue;
+    let currCol = cell.attributes["data-column"].nodeValue;
+    if (!(currRow in drawnCells)) {
+      drawnCells[currRow] = [currCol];
+    } else {
+      drawnCells[currRow].push(currCol);
+    }
     cell.classList.add("drawn");
   });
 }
