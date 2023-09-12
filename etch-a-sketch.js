@@ -68,7 +68,7 @@ function createRow(row, size) {
   div.classList.add("row");
   div.setAttribute("data-row", `${row}`);
   for (let i = 0; i < size; i++) {
-    let cell = createCell(row, i, size);
+    let cell = createCell(i);
     div.appendChild(cell);
   }
   return div;
@@ -79,7 +79,7 @@ function createRow(row, size) {
   into the size of the cell, it is not the size of the 
   cell itself.
 */
-function createCell(row, col, sizeFactor) {
+function createCell(col) {
   let cell = document.createElement("div");
   cell.classList.add("cell"); //Give each cell a unique set of identifiers
   // cell.setAttribute(`data-row`, `${row}`); //Moved to the row div
@@ -94,6 +94,22 @@ function createCell(row, col, sizeFactor) {
 
 function increaseSketchSize(newSize) {
   newSize = Number(newSize);
+
+  for (let i = 0; i < newSize; i++) {
+    let currentRow = document.querySelector(`[data-row="${i}"]`);
+    if (i < cellCount) {
+      for (let i = cellCount; i < newSize; i++) {
+        currentRow.appendChild(createCell(i));
+      }
+    } else {
+      rowContainer.appendChild(createRow(i, newSize));
+    }
+  }
+  cellCount = newSize;
+  updateCellSizeCSS();
+
+  /*
+  Old version
   //Get the info:
   let newCellSize = sketchSize / newSize;
 
@@ -121,7 +137,7 @@ function increaseSketchSize(newSize) {
         additionalColumns++
       ) {
         currentRow.appendChild(
-          createCell(rowLoopVariable, additionalColumns, newSize)
+          createCell(additionalColumns)
         );
       }
     }
@@ -131,6 +147,7 @@ function increaseSketchSize(newSize) {
       rowContainer.appendChild(row);
     }
   }
+  */
 
   //Update cellCount to match the new size
   cellCount = newSize;
