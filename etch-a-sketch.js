@@ -105,9 +105,7 @@ function shrinkSketchSize(newSize) {
       //Remove cells from end of row
       let cellArray = Array.from(currentRow.childNodes).slice(0, newSize);
       currentRow.innerHTML = "";
-      cellArray.forEach((cell) => {
-        currentRow.appendChild(cell);
-      });
+      currentRow.append(...cellArray);
     } else {
       rowContainer.removeChild(currentRow);
     }
