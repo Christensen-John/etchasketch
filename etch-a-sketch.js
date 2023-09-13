@@ -120,20 +120,16 @@ function shrinkSketchSize(newSize) {
     //Get parent row. It will either be removed or have child nodes removed from it
     let currentRow = document.querySelector(`[data-row="${rowLoopVariable}"]`);
     if (rowLoopVariable < newSize) {
-      //update size of cells in the row
       //Remove cells from end of row
       let cellArray = Array.from(currentRow.childNodes).slice(0, newSize);
       currentRow.innerHTML = "";
       cellArray.forEach((cell) => {
-        cell.style.width = `${newCellSize}px`;
-        cell.style.height = `${newCellSize}px`;
         currentRow.appendChild(cell);
       });
     } else {
       rowContainer.removeChild(currentRow);
     }
   }
-  //Update cellCount to match the new size
 }
 
 function resize(newSize) {
