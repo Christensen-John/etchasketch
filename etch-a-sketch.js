@@ -3,7 +3,6 @@ const sketch = document.querySelector("div.sketch");
 const rowContainer = document.querySelector("div.row-container");
 const eraseButton = document.querySelector("button#erase");
 const resizeField = document.querySelector("input#sizeInputField");
-const resizeButton = document.querySelector("button#sizeInputButton");
 const resetButton = document.querySelector("button#reset");
 const sketchSize = 960;
 const defaultCellCount = 16;
@@ -27,7 +26,7 @@ function setup() {
 
   //setup Menu functionality
   addEraserListener(eraseButton);
-  addResizeListener(resizeButton);
+  addResizeListener(resizeField);
   addResetListener(resetButton);
 
   //Setup sketch area
@@ -56,8 +55,6 @@ function updateCellSizeCSS() {
       sketchSize / cellCount
     }px;}`
   );
-  console.log(sketchSize);
-  console.log(cellCount);
 }
 
 function createRow(row, size) {
@@ -130,6 +127,11 @@ function resize(newSize) {
   updateCellSizeCSS();
 }
 
+function updateSizeLabel(newSize) {
+  let label = document.querySelector("h2#resolution-label");
+  label.innerHTML = `${newSize} x ${newSize}`;
+}
+
 /* !! Listener Functions*/
 function addHoverListener(cell) {
   cell.addEventListener("mouseover", () => {
@@ -137,14 +139,23 @@ function addHoverListener(cell) {
   });
 }
 
-function addResizeListener(button) {
-  button.addEventListener("click", () => {
+function addResizeListener(slider) {
+  slider.addEventListener("input", () => {
     //Get the value from the field
     let newSize = Number(resizeField.value);
-
     resize(newSize);
+    updateSizeLabel(newSize);
   });
 }
+
+// function addResizeListener(button) {
+//   button.addEventListener("click", () => {
+//     //Get the value from the field
+//     let newSize = Number(resizeField.value);
+
+//     resize(newSize);
+//   });
+// }
 
 function addEraserListener(button) {
   button.addEventListener("click", clear);
@@ -165,9 +176,11 @@ function addResetSizeListener(button) {
 function addResetListener(button) {
   button.addEventListener("click", () => {
     resize(defaultCellCount);
+    resizeField.value = `${defaultCellCount}`;
+    updateSizeLabel(defaultCellCount);
     clear();
-    resizeField.value = "";
   });
 }
+
 /* !! Execution */
 setup();
