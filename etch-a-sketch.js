@@ -15,6 +15,11 @@ let cellCount = defaultCellCount;
 function setup() {
   //Link cell size defining stylesheet
   document.adoptedStyleSheets = [stylesheet];
+  stylesheet.insertRule(
+    ` div.cell {width: ${sketchSize / cellCount}px; height: ${
+      sketchSize / cellCount
+    }px;}`
+  );
 
   //Setup sketch area
   sketch.style.height = `${sketchSize}px`;
@@ -27,7 +32,6 @@ function setup() {
 
   //Setup sketch area
   setupRowContainer(defaultCellCount);
-  updateCellSizeCSS();
 }
 
 function clear() {
@@ -129,15 +133,6 @@ function resize(newSize) {
 /* !! Listener Functions*/
 function addHoverListener(cell) {
   cell.addEventListener("mouseover", () => {
-    // console.log(cell.parentElement.attributes["data-row"].nodeValue);
-    // console.log(cell.attributes["data-column"].nodeValue);
-    let currRow = cell.parentElement.attributes["data-row"].nodeValue;
-    let currCol = cell.attributes["data-column"].nodeValue;
-    if (!(currRow in drawnCells)) {
-      drawnCells[currRow] = [currCol];
-    } else {
-      drawnCells[currRow].push(currCol);
-    }
     cell.classList.add("drawn");
   });
 }
