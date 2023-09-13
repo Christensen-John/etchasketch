@@ -7,25 +7,15 @@ const resizeButton = document.querySelector("button#sizeInputButton");
 const resetButton = document.querySelector("button#reset");
 const sketchSize = 960;
 const defaultCellCount = 16;
+const stylesheet = new CSSStyleSheet();
 let cellCount = defaultCellCount;
-const drawnCells = {};
-
-//CSS Stylesheet test and creation
-let stylesheet = new CSSStyleSheet();
-document.adoptedStyleSheets = [stylesheet];
-stylesheet.insertRule(
-  `div.cell{width: ${sketchSize / cellCount}px; height: ${
-    sketchSize / cellCount
-  }px;}`
-);
-// TODO:
-// Create an object of to hold drawn cells. Keys are rows, values are arrays and hold the columns.
-// This way only looping through the drawn cell object arrays is necessary when changing size
-// Update cell creation to remove the size. Only set row column information
 
 /* !! Functions */
 //For first time setup
 function setup() {
+  //Link cell size defining stylesheet
+  document.adoptedStyleSheets = [stylesheet];
+
   //Setup sketch area
   sketch.style.height = `${sketchSize}px`;
   sketch.style.width = `${sketchSize}px`;
@@ -37,6 +27,7 @@ function setup() {
 
   //Setup sketch area
   setupRowContainer(defaultCellCount);
+  updateCellSizeCSS();
 }
 
 function clear() {
@@ -76,20 +67,10 @@ function createRow(row, size) {
   return div;
 }
 
-/*
-  sizeFactor is not named size since it only factors 
-  into the size of the cell, it is not the size of the 
-  cell itself.
-*/
 function createCell(col) {
   let cell = document.createElement("div");
   cell.classList.add("cell"); //Give each cell a unique set of identifiers
-  // cell.setAttribute(`data-row`, `${row}`); //Moved to the row div
   cell.setAttribute(`data-column`, `${col}`);
-
-  //Moved cell size to a custom function
-  //cell.style.width = `${sketchSize / sizeFactor}px`;
-  //cell.style.height = `${sketchSize / sizeFactor}px`;
   addHoverListener(cell);
   return cell;
 }

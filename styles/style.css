@@ -17,30 +17,13 @@ div.cell-container {
 
 div.sketch {
   aspect-ratio: 1 / 1;
-  /* height: 960px; */
   border: 3px solid lightcoral;
   display: flex;
   flex-wrap: wrap;
 }
-/*
-div[data-row] {
-  height: 6.25%;
-  border: 1px solid grey;
-  display: flex;
-} */
-
-/* div[data-column] {
-  aspect-ratio: 1 / 1;
-  border: 1px dotted blue;
-} */
-
-div.cell {
-  /* outline: 1px dotted blue; */
-}
 
 div.cell.drawn {
   background-color: black;
-  /* transition: 0.5; */
 }
 
 div.menu {
