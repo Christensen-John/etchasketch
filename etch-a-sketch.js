@@ -61,6 +61,8 @@ function updateCellSizeCSS() {
       sketchSize / cellCount
     }px;}`
   );
+  console.log(sketchSize);
+  console.log(cellCount);
 }
 
 function createRow(row, size) {
@@ -93,8 +95,6 @@ function createCell(col) {
 }
 
 function increaseSketchSize(newSize) {
-  newSize = Number(newSize);
-
   for (let i = 0; i < newSize; i++) {
     let currentRow = document.querySelector(`[data-row="${i}"]`);
     if (i < cellCount) {
@@ -105,56 +105,9 @@ function increaseSketchSize(newSize) {
       rowContainer.appendChild(createRow(i, newSize));
     }
   }
-  cellCount = newSize;
-  updateCellSizeCSS();
-
-  /*
-  Old version
-  //Get the info:
-  let newCellSize = sketchSize / newSize;
-
-  //Loop from 0 up to newSize. This goes through all rows
-  for (let rowLoopVariable = 0; rowLoopVariable < newSize; rowLoopVariable++) {
-    //If there is an old row
-    if (newSize === cellCount) {
-      console.warn(`No change was made to size since the value is the same`);
-    } else if (rowLoopVariable < cellCount) {
-      //Get the cells to update the sizes:
-      let currentRow = document.querySelector(
-        `[data-row="${rowLoopVariable}"]`
-      );
-
-      //Loop through each of the cells and update the size
-      currentRow.childNodes.forEach((cell) => {
-        cell.style.width = `${newCellSize}px`;
-        cell.style.height = `${newCellSize}px`;
-      });
-
-      //2-b append new cells
-      for (
-        let additionalColumns = cellCount;
-        additionalColumns < newSize;
-        additionalColumns++
-      ) {
-        currentRow.appendChild(
-          createCell(additionalColumns)
-        );
-      }
-    }
-    //else a new one needs to be created
-    else {
-      let row = createRow(rowLoopVariable, newSize);
-      rowContainer.appendChild(row);
-    }
-  }
-  */
-
-  //Update cellCount to match the new size
-  cellCount = newSize;
 }
 
 function shrinkSketchSize(newSize) {
-  newSize = Number(newSize);
   //calculate new cellSize
   let newCellSize = sketchSize / newSize;
 
@@ -181,10 +134,10 @@ function shrinkSketchSize(newSize) {
     }
   }
   //Update cellCount to match the new size
-  cellCount = newSize;
 }
 
 function resize(newSize) {
+  newSize = Number(newSize);
   if (newSize === cellCount) {
     console.warn("New size value needs to be different from current size");
   } else if (newSize > cellCount) {
@@ -192,6 +145,7 @@ function resize(newSize) {
   } else {
     shrinkSketchSize(newSize);
   }
+  cellCount = newSize;
   updateCellSizeCSS();
 }
 
